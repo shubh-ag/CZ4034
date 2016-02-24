@@ -49,7 +49,7 @@ for year in range(int(oldest_year), int(current_year) + 1):
             if (pages > 0):
                 print("Number of pages = " + str(pages))
             with open("stats.csv", "a") as stats:
-                stats.write(begin_date + "," + end_date + "," + str(hits) + "," + str(pages)+"\n")
+                stats.write(str(year) + str(mon) + str(bd) + "," + str(year) + str(mon) + str(ed) + "," + str(hits) + "," + str(pages)+"\n")
             for i in range(0, pages):
                 url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + str(
                     i) + "&" + key
