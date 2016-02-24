@@ -19,8 +19,8 @@ resp = requests.get(url)
 oldest_year = (resp.json()["response"]["docs"][0]["pub_date"])[0:4]
 current_year = datetime.date.today().strftime('%Y')
 current_date = ((datetime.date.today() + datetime.timedelta(days=1)).strftime('%Y%m%d'))
-stats = open("stats.csv", "a")
-stats.write("Begin Date, End Date, Hits, Pages\n")
+with open("stats.csv", "a") as stats:
+    stats.write("Begin Date, End Date, Hits, Pages\n")
 for year in range(int(oldest_year), int(current_year) + 1):
     for month in range(1, 13):
         for date in range(1, days[month - 1], 7):
@@ -48,13 +48,14 @@ for year in range(int(oldest_year), int(current_year) + 1):
                 pages += 1
             if (pages > 0):
                 print("Number of pages = " + str(pages))
-            stats.write(begin_date + "," + end_date + "," + str(hits) + "," + str(pages)+"\n")
+            with open("stats.csv", "a") as stats:
+                stats.write(begin_date + "," + end_date + "," + str(hits) + "," + str(pages)+"\n")
             for i in range(0, pages):
                 url = prefix + "?&" + fq + "&" + sort + "&" + begin_date + "&" + end_date + "&" + page + str(
                     i) + "&" + key
                 resp = requests.get(url)
-                file = open("news_desk_health_" + str(count) + ".json", 'w')
+                with open("../jsonFiles/news_desk_health_" + str(count) + ".json", 'w') as file:
+                    json.dump(resp.json(), file)
                 print("Writing to file: news_desk_health_" + str(count) + ".json")
-                json.dump(resp.json(), file)
                 print("Page = " + str(i) + " done")
                 count += 1
